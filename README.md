@@ -204,8 +204,6 @@ python tests/test_api.py
 
 ## 🏁 Project Status
 
-### ✅ READY FOR SUBMISSION
-
 - Model trained and validated
 - API stable and secure
 - All problem constraints satisfied
