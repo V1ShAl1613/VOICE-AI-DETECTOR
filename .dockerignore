@@ -1,0 +1,8 @@
+dataset/
+__pycache__/
+*.pkl
+!app/ml/voice_auth_model.pkl
+.env
+.git
+.vscode
+venv/
