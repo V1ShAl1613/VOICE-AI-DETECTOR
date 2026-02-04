@@ -14,9 +14,6 @@ RUN apt-get update && apt-get install -y \
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# FORCE install pydub in a separate layer (cache bypass)
-RUN pip install --no-cache-dir --force-reinstall pydub==0.25.1
-
 # Copy application code
 COPY . .
 
