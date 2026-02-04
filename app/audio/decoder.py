@@ -24,7 +24,7 @@ def decode_audio(base64_string: str) -> tuple[str, str]:
             
         return tmp_path, tmp_dir
     except Exception as e:
-        raise HTTPException(status_code=400, detail=f"Invalid value for 'audioBase64': {str(e)}")
+        raise HTTPException(status_code=400, detail={"status": "error", "message": f"Invalid value for 'audioBase64': {str(e)}"})
 
 def cleanup_temp_dir(tmp_dir: str):
     """

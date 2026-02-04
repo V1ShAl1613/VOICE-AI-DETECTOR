@@ -1,6 +1,9 @@
 import librosa
 import numpy as np
 import scipy.stats
+import os
+import tempfile
+from pydub import AudioSegment
 
 def extract_features(file_path: str):
     """
@@ -8,13 +11,38 @@ def extract_features(file_path: str):
     Returns a 1D numpy array of features.
     Feature vector size depends on the number of stats computed.
     """
+    wav_path = None
     try:
-        # Load audio with a fixed sample rate to ensure consistency
-        # Explicitly close file after loading to avoid Windows locking issues
-        y, sr = librosa.load(file_path, sr=22050)
+        # Use pydub for more robust audio loading (handles various MP3 formats better)
+        try:
+            audio = AudioSegment.from_file(file_path, format="mp3")
+        except Exception as e:
+            raise ValueError(f"Cannot decode MP3 file: {str(e)}")
         
-        # Force data into memory and allow file to be released
+        # Validate audio duration
+        duration_sec = len(audio) / 1000.0
+        if duration_sec < 0.5:
+            raise ValueError(f"Audio too short ({duration_sec:.2f}s). Minimum 0.5 seconds required.")
+        
+        if len(audio) == 0:
+            raise ValueError("Audio file is empty.")
+        
+        # Convert to mono and set sample rate
+        audio = audio.set_channels(1).set_frame_rate(22050)
+        
+        # Export to temporary WAV for librosa processing
+        tmp_dir = os.path.dirname(file_path)
+        wav_path = os.path.join(tmp_dir, "temp_converted.wav")
+        audio.export(wav_path, format="wav")
+        
+        # Now load with librosa (WAV is more reliable)
+        y, sr = librosa.load(wav_path, sr=22050)
+        
+        # Force data into memory
         y = np.array(y, copy=True)
+        
+        if len(y) == 0:
+            raise ValueError("Audio conversion resulted in empty data.")
         
         # 1. MFCCs (Mean + Std) - 13 coefficients
         mfcc = librosa.feature.mfcc(y=y, sr=sr, n_mfcc=13)
@@ -99,6 +127,12 @@ def extract_features(file_path: str):
         return features
         
     except Exception as e:
+        # Cleanup temp wav if exists
+        if wav_path and os.path.exists(wav_path):
+            try:
+                os.remove(wav_path)
+            except:
+                pass
         # In production, log this error
-        print(f"Error extracting features: {e}")
-        raise e
+        print(f"Error extracting features: {type(e).__name__}: {e}")
+        raise ValueError(str(e) if str(e) else f"Audio processing error: {type(e).__name__}")

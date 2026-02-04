@@ -1,0 +1,55 @@
+﻿============================================================
+VOICE AI DETECTION API - COMPLIANCE TEST REPORT
+============================================================
+Test Time: 2026-02-04 10:41:34
+Base URL: http://localhost:8000
+============================================================
+
+python : Traceback 
+(most recent call 
+last):
+At line:1 char:1
++ python 
+compliance_test.py 
+2>&1 | Out-File 
+-FilePath 
+test_report.txt - ...
++ ~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~
+    + CategoryInfo    
+          : 
+NotSpecified: (Tra    
+ceback (most recent 
+ca    ll 
+last)::String) [],    
+ RemoteException
+    + 
+FullyQualifiedErrorI  
+  d : 
+NativeCommandError
+ 
+  File "C:\Users\vish1
+\Desktop\GUVI HACKTHON
+\voice_ai_detector\com
+pliance_test.py", 
+line 56, in <module>
+    print("\U0001f4cb 
+SECTION 1: API 
+Availability")
+  File "C:\Program Fil
+es\Python312\Lib\encod
+ings\cp1252.py", line 
+19, in encode
+    return codecs.char
+map_encode(input,self.
+errors,encoding_table)
+[0]
+           ^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^
+UnicodeEncodeError: 
+'charmap' codec can't 
+encode character 
+'\U0001f4cb' in 
+position 0: character 
+maps to <undefined>
