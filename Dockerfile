@@ -1,3 +1,4 @@
+# Force rebuild - Cache invalidation
 FROM python:3.9-slim
 
 WORKDIR /app
