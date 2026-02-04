@@ -21,5 +21,5 @@ RUN mkdir -p app/ml/artifacts
 # Expose port
 EXPOSE 8000
 
-# Command to run the application
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
+# Command to run the application (using shell form to allow environment variable expansion)
+CMD uvicorn app.main:app --host 0.0.0.0 --port ${PORT:-8000}
