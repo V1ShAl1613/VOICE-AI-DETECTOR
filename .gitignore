@@ -21,10 +21,13 @@ Thumbs.db
 # Test files
 test_*.py
 !tests/test_api.py
-final_validation.py
-test_mp3_fix.py
-test_mp3_debug.py
-qa_validation_script.py
+!final_validation.py
+!test_mp3_fix.py
+!test_mp3_debug.py
+
+
+
+
 
 # Temp files
 *.tmp
