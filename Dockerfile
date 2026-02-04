@@ -1,17 +1,18 @@
-# Force rebuild - Cache invalidation
+# Dockerfile for Voice AI Detector
+# Cache bust: 2026-02-04-v2
 FROM python:3.9-slim
 
 WORKDIR /app
 
-# Install system dependencies for audio processing (libsndfile is required by librosa)
+# Install system dependencies for audio processing
 RUN apt-get update && apt-get install -y \
     libsndfile1 \
     ffmpeg \
     && rm -rf /var/lib/apt/lists/*
 
-# Copy requirements and install
+# Copy requirements and install - CACHE BUST by including version marker
 COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt && pip install pydub==0.25.1
 
 # Copy application code
 COPY . .
@@ -22,5 +23,5 @@ RUN mkdir -p app/ml/artifacts
 # Expose port
 EXPOSE 8000
 
-# Command to run the application (using shell form to allow environment variable expansion)
+# Command to run the application
 CMD uvicorn app.main:app --host 0.0.0.0 --port ${PORT:-8000}
