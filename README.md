@@ -173,7 +173,28 @@ docker build -t voice-ai-detector .
 docker run -p 8000:8000 -e API_KEY=secret123 voice-ai-detector
 ```
 
-> The trained model is baked into the Docker image for reliable cold starts.
+---
+
+## 🚢 Deployment Notes
+
+### Render Deployment
+
+**Important:** This project uses `librosa` and `soundfile` for audio processing. **Pydub is NOT required** and has been completely removed from the codebase (as of commit `efccd00`).
+
+If encountering `ModuleNotFoundError: No module named 'pydub'` on Render:
+1. **Clear Render's build cache** from the Render dashboard
+2. **Manually trigger a redeploy** from the latest commit
+3. Verify that Render is deploying from the `main` branch
+4. Ensure `requirements.txt` does not contain `pydub`
+
+**Current Dependencies:**
+```
+librosa==0.10.1
+soundfile==0.12.1
+audioread==3.0.1
+```
+
+These libraries handle all audio formats (WAV, MP3, OGG, FLAC) without requiring pydub or ffmpeg.
 
 ---
 

@@ -3,7 +3,6 @@ import numpy as np
 import scipy.stats
 import os
 import tempfile
-import soundfile as sf
 
 def extract_features(file_path: str):
     """
