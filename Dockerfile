@@ -1,5 +1,5 @@
 # Dockerfile for Voice AI Detector
-# Cache bust: 2026-02-04-v2
+# Build version: 2026-02-04-v3
 FROM python:3.9-slim
 
 WORKDIR /app
@@ -10,9 +10,12 @@ RUN apt-get update && apt-get install -y \
     ffmpeg \
     && rm -rf /var/lib/apt/lists/*
 
-# Copy requirements and install - CACHE BUST by including version marker
+# Copy requirements and install
 COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt && pip install pydub==0.25.1
+RUN pip install --no-cache-dir -r requirements.txt
+
+# FORCE install pydub in a separate layer (cache bypass)
+RUN pip install --no-cache-dir --force-reinstall pydub==0.25.1
 
 # Copy application code
 COPY . .
