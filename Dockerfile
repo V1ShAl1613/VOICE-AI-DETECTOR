@@ -1,5 +1,5 @@
 # Dockerfile for Voice AI Detector
-# Build version: 2026-02-05-NO-PYDUB-FINAL
+# Build version: 2026-02-05-EMERGENCY-PYDUB-RESTORED
 FROM python:3.9-slim
 
 WORKDIR /app
