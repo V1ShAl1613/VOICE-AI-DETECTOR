@@ -23,6 +23,10 @@ app.add_middleware(
 async def startup_event():
     # Ensure model is checked/loaded on startup
     # model_loader is a singleton instantiated on import, but we can re-check here
+    print("----------------------------------------------------------------")
+    print("DEPLOYMENT SIGNATURE: v2026-02-05-CORE-FEATURES-REFACTOR")
+    print("If you see this, you are running the NEW code with core_features.py")
+    print("----------------------------------------------------------------")
     if model_loader.model is None:
         print("WARNING: Model not loaded. API will return errors for predictions.")
 

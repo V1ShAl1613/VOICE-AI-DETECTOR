@@ -3,7 +3,7 @@ from fastapi.responses import JSONResponse
 from app.schemas import VoiceAnalysisRequest, VoiceAnalysisResponse, VoiceClassification, ErrorResponse
 from app.core.security import get_api_key
 from app.audio.decoder import decode_audio, cleanup_temp_dir
-from app.audio.features import extract_features
+from app.audio.core_features import extract_features
 from app.ml.model import model_loader
 from app.ml.explanation import generate_explanation
 from app.core.config import settings
