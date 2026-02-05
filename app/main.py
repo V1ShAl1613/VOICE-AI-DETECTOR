@@ -19,6 +19,36 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# Custom Exception Handlers for strict compliance
+from fastapi.exceptions import RequestValidationError
+from starlette.exceptions import HTTPException
+from fastapi.responses import JSONResponse
+from fastapi import Request
+
+@app.exception_handler(HTTPException)
+async def http_exception_handler(request: Request, exc: HTTPException):
+    # Handle auth errors and other HTTP exceptions
+    if isinstance(exc.detail, dict):
+        return JSONResponse(
+            status_code=exc.status_code,
+            content=exc.detail
+        )
+    return JSONResponse(
+        status_code=exc.status_code,
+        content={"status": "error", "message": str(exc.detail)}
+    )
+
+@app.exception_handler(RequestValidationError)
+async def validation_exception_handler(request: Request, exc: RequestValidationError):
+    # Handle schema validation errors (e.g. invalid base64, missing fields)
+    return JSONResponse(
+        status_code=400,
+        content={
+            "status": "error", 
+            "message": f"Invalid request format: {str(exc.errors()[0].get('msg')) if exc.errors() else 'Unknown error'}"
+        }
+    )
+
 @app.on_event("startup")
 async def startup_event():
     # Ensure model is checked/loaded on startup
