@@ -1,7 +1,8 @@
 dataset/
 __pycache__/
-*.pkl
-!app/ml/voice_auth_model.pkl
+# Exclude dataset pkl files only (not the model)
+dataset/*.pkl
+training/*.pkl
 .env
 .git
 .vscode
