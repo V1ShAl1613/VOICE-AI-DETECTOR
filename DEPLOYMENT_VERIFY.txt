@@ -1,0 +1,11 @@
+# DEPLOYMENT VERIFICATION FILE
+# DO NOT DELETE THIS FILE - IT HELPS VERIFY RENDER IS DEPLOYING THE CORRECT CODE
+
+DEPLOYMENT_COMMIT_HASH=c2d7496
+DEPLOYMENT_DATE=2026-02-05T10:30:00+05:30
+PYDUB_STATUS=REMOVED
+FEATURES_FILE=app/audio/core_features.py (NOT features.py)
+
+# If you see "/app/app/audio/features.py" in Render logs, you are deploying OLD code
+# The correct code imports from "app/audio/core_features import extract_features"
+# This file's presence confirms you're deploying the RIGHT code
