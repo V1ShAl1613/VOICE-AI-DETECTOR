@@ -1,0 +1,90 @@
+{
+  "finalScore": 95,
+  "totalFiles": 5,
+  "scorePerFile": 20.0,
+  "successfulClassifications": 5,
+  "wrongClassifications": 0,
+  "failedTests": 0,
+  "fileResults": [
+    {
+      "fileIndex": 0,
+      "language": "English",
+      "expectedClassification": "HUMAN",
+      "actualClassification": "HUMAN",
+      "confidenceScore": 0.9598,
+      "status": "success",
+      "matched": true,
+      "score": 20.0,
+      "responseData": {
+        "status": "success",
+        "classification": "HUMAN",
+        "confidenceScore": 0.9598,
+        "explanation": "Human voice indicators detected: natural pitch variation, organic vocal irregularities, and natural breathing patterns."
+      }
+    },
+    {
+      "fileIndex": 1,
+      "language": "English",
+      "expectedClassification": "HUMAN",
+      "actualClassification": "HUMAN",
+      "confidenceScore": 0.9598,
+      "status": "success",
+      "matched": true,
+      "score": 20.0,
+      "responseData": {
+        "status": "success",
+        "classification": "HUMAN",
+        "confidenceScore": 0.9598,
+        "explanation": "Human voice indicators detected: natural pitch variation, and organic vocal irregularities."
+      }
+    },
+    {
+      "fileIndex": 2,
+      "language": "English",
+      "expectedClassification": "HUMAN",
+      "actualClassification": "HUMAN",
+      "confidenceScore": 0.9002,
+      "status": "success",
+      "matched": true,
+      "score": 20.0,
+      "responseData": {
+        "status": "success",
+        "classification": "HUMAN",
+        "confidenceScore": 0.9002,
+        "explanation": "Human voice indicators detected: natural pitch variation, and organic vocal irregularities."
+      }
+    },
+    {
+      "fileIndex": 3,
+      "language": "Tamil",
+      "expectedClassification": "AI_GENERATED",
+      "actualClassification": "AI_GENERATED",
+      "confidenceScore": 0.6235,
+      "status": "success",
+      "matched": true,
+      "score": 15.0,
+      "responseData": {
+        "status": "success",
+        "classification": "AI_GENERATED",
+        "confidenceScore": 0.6235,
+        "explanation": "AI-generated voice indicators detected: over-smoothed spectral transitions, and unnaturally flat spectral distribution."
+      }
+    },
+    {
+      "fileIndex": 4,
+      "language": "French",
+      "expectedClassification": "HUMAN",
+      "actualClassification": "HUMAN",
+      "confidenceScore": 0.9598,
+      "status": "success",
+      "matched": true,
+      "score": 20.0,
+      "responseData": {
+        "status": "success",
+        "classification": "HUMAN",
+        "confidenceScore": 0.9598,
+        "explanation": "Human voice indicators detected: natural pitch variation."
+      }
+    }
+  ]
+}

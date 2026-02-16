@@ -12,4 +12,5 @@ joblib==1.3.2
 soundfile==0.12.1
 requests==2.31.0
 audioread==3.0.1
+scipy>=1.11.0
 

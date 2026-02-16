@@ -54,6 +54,10 @@ def test_audio(file_path, expected_class, test_num):
         response = requests.post(API_URL, json=payload, headers=headers, timeout=30)
         
         if response.status_code != 200:
+            error_msg = f"{test_num:2d}. FAIL: Status {response.status_code}\n"
+            print(error_msg.strip())
+            with open("api_errors.txt", "a", encoding="utf-8") as err_f:
+                err_f.write(error_msg)
             return None
         
         data = response.json()
@@ -75,7 +79,10 @@ def test_audio(file_path, expected_class, test_num):
             'correct': is_correct
         }
     except Exception as e:
-        print(f"{test_num:2d}. ERROR: {str(e)[:50]}")
+        error_msg = f"{test_num:2d}. ERROR: {str(e)[:50]}\n"
+        print(error_msg.strip())
+        with open("api_errors.txt", "a", encoding="utf-8") as err_f:
+            err_f.write(error_msg)
         return None
 
 # Run tests
@@ -151,9 +158,16 @@ print("=" * 60)
 
 if accuracy >= 80:
     if total >= 8:
-        print(f"✅ PHASE 6 PASSED: {correct}/{total} correct ({accuracy:.1f}% >= 80%)")
+        msg = f"✅ PHASE 6 PASSED: {correct}/{total} correct ({accuracy:.1f}% >= 80%)"
+        print(msg)
     else:
-        print(f"⚠️  PHASE 6 PASSED but tested fewer than 10 samples ({total}/10)")
+        msg = f"⚠️  PHASE 6 PASSED but tested fewer than 10 samples ({total}/10)"
+        print(msg)
+    with open("final_report.txt", "w", encoding="utf-8") as rep:
+        rep.write(msg + f"\nAccuracy: {accuracy:.1f}% ({correct}/{total})")
 else:
-    print(f"❌ PHASE 6 FAILED: {correct}/{total} correct ({accuracy:.1f}% < 80%)")
+    msg = f"❌ PHASE 6 FAILED: {correct}/{total} correct ({accuracy:.1f}% < 80%)"
+    print(msg)
+    with open("final_report.txt", "w", encoding="utf-8") as rep:
+        rep.write(msg)
     sys.exit(1)

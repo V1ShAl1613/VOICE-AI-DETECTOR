@@ -3,58 +3,87 @@ import numpy as np
 def generate_explanation(features: np.ndarray, prediction_prob: float, threshold: float) -> str:
     """
     Generates a technical explanation based on feature values and classification.
-    Expects the full feature vector as input.
+    Updated for 92-feature vector layout.
+    
+    Feature indices (must match core_features.py):
+      0-12:  MFCC Mean (13)
+      13-25: MFCC Std (13)
+      26-38: Delta MFCC Mean (13)
+      39-51: Delta MFCC Std (13)
+      52: Centroid Mean, 53: Centroid Std
+      54: Rolloff Mean, 55: Rolloff Std
+      56: Flatness Mean
+      57: Bandwidth Mean, 58: Bandwidth Std
+      59-65: Spectral Contrast Mean (7)
+      66-77: Chroma Mean (12)
+      78: Pitch Mean, 79: Pitch Std
+      80: ZCR Mean, 81: ZCR Var
+      82: RMSE Mean, 83: RMSE Var
+      84: Silence Ratio
+      85: Spectral Smoothness
+      86-91: Tonnetz Mean (6)
     """
     if prediction_prob < threshold:
-        return "Natural specific traits detected: irregular pitch patterns and organic spectral variance."
+        # HUMAN classification
+        reasons = []
+        
+        # Check for natural voice indicators
+        pitch_std = features[79] if len(features) > 79 else 0
+        zcr_var = features[81] if len(features) > 81 else 0
+        silence_ratio = features[84] if len(features) > 84 else 0
+        
+        if pitch_std > 15.0:
+            reasons.append("natural pitch variation")
+        if zcr_var > 0.001:
+            reasons.append("organic vocal irregularities")
+        if silence_ratio > 0.05:
+            reasons.append("natural breathing patterns")
+        
+        if not reasons:
+            reasons.append("natural human speech characteristics")
+        
+        if len(reasons) > 1:
+            text = ", ".join(reasons[:-1]) + ", and " + reasons[-1]
+        else:
+            text = reasons[0]
+        return f"Human voice indicators detected: {text}."
     
-    # Feature indices (must match features.py):
-    # 0-12: MFCC Mean
-    # 13-25: MFCC Std
-    # 26: Centroid Mean, 27: Centroid Std
-    # 28: Rolloff Mean, 29: Rolloff Std
-    # 30: Flatness Mean
-    # 31: Pitch Mean, 32: Pitch Std
-    # 33: ZCR Mean, 34: ZCR Var
-    # 35: RMSE Mean, 36: RMSE Var
-    # 37: Silence Ratio
-    # 38: Spectral Smoothness
-    
+    # AI_GENERATED classification
     reasons = []
     
-    # Extract key metrics
-    pitch_std = features[32]
-    zcr_var = features[34] # Proxy for jitter/irregularity
-    silence_ratio = features[37]
-    spectral_smoothness = features[38]
+    # Extract key metrics safely
+    pitch_std = features[79] if len(features) > 79 else 0
+    zcr_var = features[81] if len(features) > 81 else 0
+    silence_ratio = features[84] if len(features) > 84 else 0
+    spectral_smoothness = features[85] if len(features) > 85 else 0
+    flatness = features[56] if len(features) > 56 else 0
     
-    # Logic for AI artifacts
-    
-    # 1. Robotic Pitch Consistency (Low pitch variance)
-    # Thresholds are heuristic; ideally these should be continuously calibrated
+    # 1. Robotic Pitch Consistency
     if pitch_std < 10.0: 
         reasons.append("robotic pitch consistency")
         
-    # 2. Synthetic Vocal Stability (Low jitter/shimmer proxy)
+    # 2. Synthetic Vocal Stability
     if zcr_var < 0.001:
         reasons.append("synthetic vocal stability")
         
-    # 3. Absence of Natural Breathing (Low silence ratio)
+    # 3. Absence of Natural Breathing
     if silence_ratio < 0.05:
-        reasons.append("absence of natural breathing")
+        reasons.append("absence of natural breathing patterns")
         
-    # 4. Speech Synthesis Artifacts (Over-smoothed spectra)
-    # High smoothness usually means less transient noise which characterizes human speech
+    # 4. Over-smoothed Spectra
     if abs(spectral_smoothness) < 0.5: 
         reasons.append("over-smoothed spectral transitions")
+    
+    # 5. Flat spectral distribution (TTS artifact)
+    if flatness > 0.1:
+        reasons.append("unnaturally flat spectral distribution")
         
     if not reasons:
-        reasons.append("detected statistical anomalies in frequency distribution")
+        reasons.append("statistical anomalies in frequency distribution consistent with AI synthesis")
         
-    # Join nicely
     if len(reasons) > 1:
         text = ", ".join(reasons[:-1]) + ", and " + reasons[-1]
     else:
         text = reasons[0]
         
-    return f"{text.capitalize()} detected"
+    return f"AI-generated voice indicators detected: {text}."

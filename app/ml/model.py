@@ -39,7 +39,7 @@ class ModelLoader:
             if hasattr(self.model, "predict_proba"):
                 probs = self.model.predict_proba(features_reshaped)
                 # Assuming index 1 is positive class (AI)
-                score = probs[0][1]
+                score = float(probs[0][1])  # Convert numpy float32 -> Python float
             else:
                 # Fallback for models without probability (shouldn't happen with XGB/Logistic)
                 score = float(self.model.predict(features_reshaped)[0])
