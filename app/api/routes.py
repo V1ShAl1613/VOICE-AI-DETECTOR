@@ -7,6 +7,8 @@ from app.audio.core_features import extract_features
 from app.ml.model import model_loader
 from app.ml.explanation import generate_explanation
 from app.core.config import settings
+import requests
+import base64
 
 router = APIRouter()
 
@@ -19,6 +21,24 @@ async def detect_voice(request: VoiceAnalysisRequest, api_key: str = Depends(get
     temp_file_path = None
     temp_dir = None
     try:
+        # 0. Handle URL input if base64 is missing
+        if not request.audioBase64 and request.audioUrl:
+            try:
+                # Download audio from URL
+                response = requests.get(request.audioUrl, timeout=30)
+                if response.status_code == 200:
+                    request.audioBase64 = base64.b64encode(response.content).decode('utf-8')
+                else:
+                    return JSONResponse(
+                        status_code=400,
+                        content={"status": "error", "message": f"Failed to download audio from URL: Status {response.status_code}"}
+                    )
+            except Exception as e:
+                return JSONResponse(
+                    status_code=400,
+                    content={"status": "error", "message": f"Error downloading audio from URL: {str(e)}"}
+                )
+
         # 1. Decode Audio
         temp_file_path, temp_dir = decode_audio(request.audioBase64)
         
